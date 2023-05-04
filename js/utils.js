@@ -1,3 +1,14 @@
+async function share(title, text)
+{
+    try{ await navigator.share(
+        {
+            title, text,
+            //url, files, 
+        }
+    ); }
+    catch (err) { console.error(err); }
+}
+
 function getFileName() {
     return 'Notes-' + getCurrentDate() + '.txt';
 }

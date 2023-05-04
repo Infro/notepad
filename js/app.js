@@ -34,10 +34,10 @@ $(document).ready(function () {
 	};
 
 	const themeConfig = {
-		lightmodeText, 
-		darkmodeText, 
-		lightMetaColor, 
-		darkMetaColor, 
+		lightmodeText,
+		darkmodeText,
+		lightMetaColor,
+		darkMetaColor,
 		metaThemeColor
 	};
 
@@ -91,7 +91,7 @@ $(document).ready(function () {
 		notepad.wordCount.text(characterAndWordCountText);
 		setState('note', get(this).val());
 	}, 500));
-	
+
 	notepad.clearNotes.on('click', function () {
 		Swal.fire({
 			title: 'Want to delete notes?',
@@ -124,7 +124,8 @@ $(document).ready(function () {
 	})
 
 	notepad.downloadNotes.click(function () {
-		saveTextAsFile(note.value, getFileName());
+		if (state.isShare) { share(getFileName(), note.value); }
+		else { saveTextAsFile(note.value, getFileName()); }
 	})
 
 	setTimeout(function () {
@@ -167,11 +168,11 @@ $(document).ready(function () {
 	});
 
 	notepad.resetPreferences.click(function () {
-		if (selector().state.userChosenFontSize) {	
+		if (selector().state.userChosenFontSize) {
 			removeState('userChosenFontSize');
 			resetFontSize(editorConfig.defaultFontSize);
 		}
-			
+
 		if (selector().state.userChosenLineHeight) {
 			removeState('userChosenLineHeight');
 			resetLineHeight(editorConfig.defaultLineHeight);
@@ -208,7 +209,7 @@ $(document).ready(function () {
 		window.matchMedia('(prefers-color-scheme: dark)').matches
 			? enableDarkMode(lightmodeText, darkMetaColor, metaThemeColor)
 			: enableLightMode(darkmodeText, lightMetaColor, metaThemeColor);
-	} 
+	}
 
 	if (getPWADisplayMode() === 'standalone') {
 		notepad.installApp.hide();
@@ -227,8 +228,8 @@ $(document).ready(function () {
 
 		if (event.key === 'Escape') {
 			$('.modal').modal('hide');
-		} 
-		
+		}
+
 		if ((event.ctrlKey || event.metaKey) && event.code === 'KeyS') {
 			saveTextAsFile(note.value, getFileName());
 			event.preventDefault();
